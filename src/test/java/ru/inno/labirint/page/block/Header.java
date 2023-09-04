@@ -29,7 +29,6 @@ public class Header {
         new WebDriverWait(driver, ofSeconds(10))
                 .until(textToBePresentInElement(cart, Integer.toString(number)));
     }
-
     public String getCartCounter() {
         return cart.getText();
     }
