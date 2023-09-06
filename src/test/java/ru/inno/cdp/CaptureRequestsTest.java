@@ -75,7 +75,6 @@ public class CaptureRequestsTest {
                 System.out.println("--------------------------------------");
             }
         }
-
     }
 
     @Test
