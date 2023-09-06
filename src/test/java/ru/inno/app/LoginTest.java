@@ -4,6 +4,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.PageFactory;
 import ru.inno.app.page.LoginPage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,7 +14,7 @@ public class LoginTest {
 
     @Test
     public void loginTest(ChromeDriver driver) {
-        LoginPage page = new LoginPage(driver);
+        LoginPage page = PageFactory.initElements(driver, LoginPage.class);
         String username = "super-user";
 
         page.open();
@@ -24,10 +25,9 @@ public class LoginTest {
 
     @Test
     public void loginFailedTest(ChromeDriver driver) {
-        LoginPage page = new LoginPage(driver);
-
+        LoginPage page = PageFactory.initElements(driver, LoginPage.class);
         page.open();
-        page.authAs("user123", "pwd");
+        page.authAs("user123", "pwd1234r5");
         String status = page.getStatusText();
         assertEquals("Invalid username/password", status);
     }

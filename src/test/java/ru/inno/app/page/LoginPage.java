@@ -1,30 +1,39 @@
 package ru.inno.app.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 public class LoginPage {
     private final WebDriver driver;
+    @FindBy(how = How.CSS, using = "[name='UserName']")
+    private WebElement usernameInput;
+    @FindBy(css = "[name='Password']")
+    private WebElement passwordInput;
+    @FindBy(css = "#loginstatus")
+    private WebElement loginStatusText;
+    @FindBy(css = "#login")
+    private WebElement loginButton;
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
 
     public void setLogin(String username) {
-        driver.findElement(By.cssSelector("[name='UserName']")).sendKeys(username);
+        usernameInput.sendKeys(username);
     }
 
     public String getStatusText() {
-        return driver.findElement(By.cssSelector("#loginstatus")).getText();
+        return loginStatusText.getText();
     }
 
     public void setPassword(String pass) {
-        driver.findElement(By.cssSelector("[name='Password']")).sendKeys(pass);
+        passwordInput.sendKeys(pass);
     }
 
     public void clickLogin() {
-        driver.findElement(By.cssSelector("#login")).click();
+        loginButton.click();
     }
 
     public void authAs(String username, String pass) {
@@ -34,7 +43,6 @@ public class LoginPage {
     }
 
     public void open() {
-        driver.manage().window().setPosition(new Point(70, -1100));
         driver.manage().window().maximize();
         driver.get("http://uitestingplayground.com/sampleapp");
     }
