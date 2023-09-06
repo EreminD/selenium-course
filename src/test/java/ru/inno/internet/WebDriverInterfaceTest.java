@@ -1,13 +1,24 @@
 package ru.inno.internet;
 
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.chromium.ChromiumDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.Logs;
+import ru.inno.labirint.LabirintTest;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +29,7 @@ public class WebDriverInterfaceTest {
 
     @BeforeEach
     public void openBrowser() {
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver();
         driver.manage().window().setPosition(new Point(120, -1000));
     }
 
@@ -226,9 +237,19 @@ public class WebDriverInterfaceTest {
         assertEquals("An iFrame containing the TinyMCE WYSIWYG Editor", h3);
     }
 
-
-
     // TODO: how to manage logs
+    @Test
+    public void logsTest() {
+        new LabirintTest().searchTest((ChromeDriver) driver);
 
+        Set<String> types = driver.manage().logs().getAvailableLogTypes(); //[browser, driver, client]
 
+        LogEntries browserLogs = driver.manage().logs().get(LogType.DRIVER);
+        LogEntries driverLogs = driver.manage().logs().get(LogType.DRIVER);
+        LogEntries clientLogs = driver.manage().logs().get(LogType.CLIENT);
+
+        for (LogEntry clientLog : browserLogs) {
+            System.out.println(clientLog);
+        }
+    }
 }

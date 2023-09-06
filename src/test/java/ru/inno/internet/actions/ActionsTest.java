@@ -12,27 +12,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.NetworkInterceptor;
-import org.openqa.selenium.devtools.v116.fetch.Fetch;
 import org.openqa.selenium.devtools.v116.log.Log;
 import org.openqa.selenium.devtools.v116.network.Network;
-import org.openqa.selenium.devtools.v116.network.model.*;
+import org.openqa.selenium.devtools.v116.network.model.Request;
+import org.openqa.selenium.devtools.v116.network.model.RequestId;
+import org.openqa.selenium.devtools.v116.network.model.Response;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.http.HttpResponse;
-import org.openqa.selenium.remote.http.Route;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static org.openqa.selenium.remote.http.Contents.utf8String;
-import static org.openqa.selenium.remote.http.Contents.asJson;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -121,13 +114,13 @@ public class ActionsTest {
 
 
     @BeforeEach
-    public void createStorage(){
+    public void createStorage() {
         driver = new ChromeDriver();
         reqs = new HashMap<>();
         resps = new HashMap<>();
         respBodies = new HashMap<>();
 
-        devTools = ((HasDevTools)driver).getDevTools();
+        devTools = ((HasDevTools) driver).getDevTools();
         devTools.createSession();
         devTools.send(Log.enable());
 
@@ -146,13 +139,15 @@ public class ActionsTest {
 
     @AfterEach
     public void buildNetworkReport() {
-        if(driver != null){
+        if (driver != null) {
+            devTools.disconnectSession();
             driver.quit();
         }
-        devTools.disconnectSession();
+
+
         for (String requestId : reqs.keySet()) {
             Request request = reqs.get(requestId);
-            if(request.getUrl().startsWith("https://todo")) {
+            if (request.getUrl().startsWith("https://todo")) {
                 Response response = resps.get(requestId);
                 String body = respBodies.get(requestId);
                 System.out.println(request.getMethod() + " " + request.getUrl() + " " + request.getPostData().orElse("NO_DATA"));
@@ -160,9 +155,8 @@ public class ActionsTest {
                 System.out.println(body);
                 System.out.println("--------------------------------------");
             }
+
         }
-
-
     }
 
     @Test
