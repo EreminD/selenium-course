@@ -84,8 +84,7 @@ public class WebElementInterfaceTest {
         WebElement input = driver.findElement(By.cssSelector("#target"));
         input.sendKeys("Test", " ", "12345");
 
-        // TODO: how to send multiple keys
-        input.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
+        input.sendKeys(Keys.chord(Keys.SHIFT, Keys.ARROW_UP), Keys.BACK_SPACE);
     }
 
     @Test

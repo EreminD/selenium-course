@@ -4,11 +4,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.logging.*;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import ru.inno.app.LoginTest;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
+import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,7 +25,13 @@ public class WebDriverInterfaceTest {
 
     @BeforeEach
     public void openBrowser() {
-        driver = new FirefoxDriver();
+        LoggingPreferences logs = new LoggingPreferences();
+        logs.enable(LogType.DRIVER, Level.INFO);
+
+        ChromeOptions options =new ChromeOptions();
+
+
+        driver = new ChromeDriver(options);
         driver.manage().window().setPosition(new Point(120, -1000));
     }
 
@@ -224,6 +237,25 @@ public class WebDriverInterfaceTest {
         driver.switchTo().defaultContent();
         String h3 = driver.findElement(By.cssSelector("h3")).getText();
         assertEquals("An iFrame containing the TinyMCE WYSIWYG Editor", h3);
+    }
+
+    @Test
+    public void logsTest(){
+        new LoginTest().loginTest((ChromeDriver)driver);
+        Logs allLogs =  driver.manage().logs();
+
+        Set<String> availableLogTypes = allLogs.getAvailableLogTypes();
+
+        allLogs.get(LogType.CLIENT);
+        LogEntries logEntries = allLogs.get(LogType.DRIVER);
+        allLogs.get(LogType.BROWSER);
+
+        for (LogEntry logEntry : logEntries) {
+            System.out.println(logEntry);
+        }
+
+        System.out.println(availableLogTypes);
+
     }
 
 
