@@ -1,4 +1,4 @@
-package ru.inno;
+package ru.inno.factory;
 
 public enum DriverType {
     CHROME, FIREFOX, EDGE, SAFARI
