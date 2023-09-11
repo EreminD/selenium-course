@@ -1,5 +1,6 @@
 package ru.inno.pagefactory.page;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,10 +30,12 @@ public class SearchResultPage extends Page {
         super(driver);
     }
 
+    @Step("Открыть страницу поиска")
     public void open() {
         driver.get(BASE_URL + "/search");
     }
 
+    @Step("Установить сортировку товаров по '{sortType}'")
     public SearchResultPage setSortingType(String sortType) {
         sortMenu.click();
         driver.findElement(cssSelector("[data-event-content='" + sortType + "']")).click();
@@ -40,6 +43,7 @@ public class SearchResultPage extends Page {
         return this;
     }
 
+    @Step("Удалить фильтр '{label.text}'")
     public SearchResultPage closeChips(Chips label) {
         for (WebElement chip : chips) {
             String txt = chip.getText();
@@ -52,6 +56,7 @@ public class SearchResultPage extends Page {
         return this;
     }
 
+    @Step("Взять все книги на странице")
     public List<BookCard> getAllBooks() {
         List<BookCard> books = new LinkedList<>();
         for (WebElement element : cards) {
@@ -61,6 +66,7 @@ public class SearchResultPage extends Page {
         return books;
     }
 
+    @Step("Дождаться, когда пропадет спиннер")
     private void waitLoader() {
         new WebDriverWait(driver, ofSeconds(10)).until(invisibilityOf(loader));
     }
