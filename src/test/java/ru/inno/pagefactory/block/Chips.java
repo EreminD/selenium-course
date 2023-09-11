@@ -12,7 +12,7 @@ public enum Chips {
         this.text = text;
     }
 
-    public String getText() {
+    public String toString(){
         return text;
     }
 }

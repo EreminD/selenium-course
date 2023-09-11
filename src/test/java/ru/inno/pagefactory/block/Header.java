@@ -1,5 +1,6 @@
 package ru.inno.pagefactory.block;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -27,6 +28,7 @@ public class Header {
         this.driver = driver;
     }
 
+    @Step("Выполнить поиск по запросу '{term}'")
     public SearchResultPage search(String term) {
         searchInput.clear();
         searchInput.sendKeys(term, Keys.RETURN);
@@ -38,6 +40,7 @@ public class Header {
         return this;
     }
 
+    @Step("Получить счетчик корзины")
     public int getCartCounter() {
         String text = cartIcon.getText();
         return Integer.parseInt(text);

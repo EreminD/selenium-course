@@ -18,5 +18,5 @@ public abstract class Page {
         return header;
     }
 
-    public abstract void  open();
+    public abstract void open();
 }

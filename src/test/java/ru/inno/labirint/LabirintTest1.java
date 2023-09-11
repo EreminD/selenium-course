@@ -23,7 +23,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.stalenessOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.textToBe;
 
 @ExtendWith(SeleniumJupiter.class)
-public class LabirintTest {
+public class LabirintTest1 {
 
     @Test
     public void searchTest(ChromeDriver driver) {
