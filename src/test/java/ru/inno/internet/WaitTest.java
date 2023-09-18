@@ -144,4 +144,12 @@ public class WaitTest {
 
         assertTrue(textEquals);
     }
+
+
+
+    @Test
+    public void awaiterTest() throws InterruptedException {
+        Waiter<String> waiter = new Waiter<>("test");
+        waiter.await(3000, s-> s.startsWith("te"));
+    }
 }
