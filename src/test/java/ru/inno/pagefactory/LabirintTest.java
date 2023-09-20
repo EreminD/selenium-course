@@ -43,7 +43,7 @@ public class LabirintTest {
     @AfterEach
     @Step("Закрыть драйвер")
     public void tearDown() {
-        if (driver != null){
+        if (driver != null) {
             driver.quit();
         }
     }
@@ -76,13 +76,13 @@ public class LabirintTest {
                 .getCartCounter();
 
         step("Ничего не делаем");
-        step("Проверяем, что в корзине счетчик товаров показывает " + books.size(), () -> {
-            assertEquals(books.size(), counter, "Количество товаров в корзине не равно 60 => " + counter);
-        });
+        step("Проверяем, что в корзине счетчик товаров показывает " + books.size(), () ->
+                assertEquals(books.size(), counter, "Количество товаров в корзине не равно 60 => " + counter)
+        );
     }
 
     @Attachment(value = "request-body.json", type = "application/json")
-    private String generateJson(){
+    private String generateJson() {
         return "{\"name\": \"tester\", \"age\":20}";
     }
 

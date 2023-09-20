@@ -42,13 +42,6 @@ public class Streams {
                 new Item(10, 2)
         );
 
-
-
-
-        // -> filter -> map
-
         return items.stream();
     }
-
-    ;
 }
