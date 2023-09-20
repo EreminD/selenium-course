@@ -1,22 +1,17 @@
 package ru.inno.selenide;
 
-import com.codeborne.selenide.*;
+import com.codeborne.selenide.AssertionMode;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.junit5.SoftAssertsExtension;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import org.openqa.selenium.By;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-import static com.codeborne.selenide.ClickOptions.*;
+import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Condition.disappear;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 @ExtendWith({SoftAssertsExtension.class})
 public class FirstTest {
@@ -30,6 +25,11 @@ public class FirstTest {
         Configuration.headless = false;
         Configuration.assertionMode = AssertionMode.SOFT;
         Configuration.savePageSource = false;
+
+        // TODO: refresh browser on next test
+        Configuration.holdBrowserOpen = true;
+        WebDriverRunner.clearBrowserCache();
+
     }
 
     @Test
@@ -57,5 +57,5 @@ public class FirstTest {
         System.out.println("Hi!");
     }
 
-    // TODO: refresh browser on next test
+
 }
