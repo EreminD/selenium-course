@@ -10,8 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 @ExtendWith({SoftAssertsExtension.class})
 public class FirstTest {
