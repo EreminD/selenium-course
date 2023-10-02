@@ -9,23 +9,42 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testcontainers.containers.BrowserWebDriverContainer;
+import org.testcontainers.containers.VncRecordingContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.nio.file.Path;
 import java.util.List;
 
 import static java.time.Duration.ofSeconds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static org.testcontainers.containers.BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL;
 
 @ExtendWith(SeleniumJupiter.class)
+@Testcontainers
 public class LabirintTest {
+
+    @Container
+    private BrowserWebDriverContainer<?> container =
+            new BrowserWebDriverContainer<>("selenium/standalone-firefox:latest")
+                    .withExposedPorts(7900)
+                    .withRecordingMode(
+                            RECORD_ALL,
+                            Path.of("vids").toFile(),
+                            VncRecordingContainer.VncRecordingFormat.MP4
+                    );
+
+
     private WebDriver driver;
 
     @BeforeEach
     public void setUp() throws MalformedURLException {
         // docker run -d -p 5555:4444 -p 7900:7900 --shm-size="2g" selenium/standalone-firefox:latest
-        driver = new RemoteWebDriver(new URL("http://localhost:5555"), new FirefoxOptions());
+//        driver = new RemoteWebDriver(new URL("http://localhost:5555"), new FirefoxOptions());
+        driver = new RemoteWebDriver(container.getSeleniumAddress(), new FirefoxOptions());
     }
 
     @AfterEach
@@ -71,37 +90,5 @@ public class LabirintTest {
     }
 }
 
-//
-//<dependency>
-//<groupId>org.testcontainers</groupId>
-//<artifactId>testcontainers</artifactId>
-//<version>1.19.0</version>
-//<scope>test</scope>
-//</dependency>
-//<dependency>
-//<groupId>org.testcontainers</groupId>
-//<artifactId>junit-jupiter</artifactId>
-//<version>1.19.0</version>
-//<scope>test</scope>
-//</dependency>
-//<dependency>
-//<groupId>org.testcontainers</groupId>
-//<artifactId>selenium</artifactId>
-//<version>1.19.0</version>
-//<scope>test</scope>
-//</dependency>
-//
-//
-//
-//
-//@Container
-//private BrowserWebDriverContainer<?> container =
-//        new BrowserWebDriverContainer<>("selenium/standalone-firefox:latest")
-//        .withExposedPorts(7900)
-//        .withRecordingMode(
-//        RECORD_ALL,
-//        Path.of("vids").toFile(),
-//        VncRecordingContainer.VncRecordingFormat.MP4
-//        );
-//
-//        driver = new RemoteWebDriver(container.getSeleniumAddress(), new FirefoxOptions());
+
+
