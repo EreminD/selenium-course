@@ -24,8 +24,8 @@ public class LabirintTest {
 
     @BeforeEach
     public void setUp() throws MalformedURLException {
-        // docker run -d -p 4444:4444 -p 7900:7900 --shm-size="2g" selenium/standalone-firefox:latest
-        driver = new RemoteWebDriver(new URL("http://localhost:4444"), new FirefoxOptions());
+        // docker run -d -p 5555:4444 -p 7900:7900 --shm-size="2g" selenium/standalone-firefox:latest
+        driver = new RemoteWebDriver(new URL("http://localhost:5555"), new FirefoxOptions());
     }
 
     @AfterEach
@@ -70,3 +70,38 @@ public class LabirintTest {
         assertEquals(sizeToBe, sizeAsIs);
     }
 }
+
+//
+//<dependency>
+//<groupId>org.testcontainers</groupId>
+//<artifactId>testcontainers</artifactId>
+//<version>1.19.0</version>
+//<scope>test</scope>
+//</dependency>
+//<dependency>
+//<groupId>org.testcontainers</groupId>
+//<artifactId>junit-jupiter</artifactId>
+//<version>1.19.0</version>
+//<scope>test</scope>
+//</dependency>
+//<dependency>
+//<groupId>org.testcontainers</groupId>
+//<artifactId>selenium</artifactId>
+//<version>1.19.0</version>
+//<scope>test</scope>
+//</dependency>
+//
+//
+//
+//
+//@Container
+//private BrowserWebDriverContainer<?> container =
+//        new BrowserWebDriverContainer<>("selenium/standalone-firefox:latest")
+//        .withExposedPorts(7900)
+//        .withRecordingMode(
+//        RECORD_ALL,
+//        Path.of("vids").toFile(),
+//        VncRecordingContainer.VncRecordingFormat.MP4
+//        );
+//
+//        driver = new RemoteWebDriver(container.getSeleniumAddress(), new FirefoxOptions());

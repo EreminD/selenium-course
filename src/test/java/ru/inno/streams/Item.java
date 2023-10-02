@@ -43,17 +43,18 @@ public class Item {
         this.countOnStorage = countOnStorage;
     }
 
+
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
-        if (!(o instanceof Item order)) return false;
-        return getId() == order.getId() && getLikes() == order.getLikes();
+        if (!(o instanceof Item)) return false;
+        Item item = (Item) o;
+        return getId() == item.getId() && getLikes() == item.getLikes() && getCountOnStorage() == item.getCountOnStorage();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLikes());
+        return Objects.hash(getId(), getLikes(), getCountOnStorage());
     }
 
     @Override
