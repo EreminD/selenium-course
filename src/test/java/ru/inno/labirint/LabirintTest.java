@@ -1,7 +1,6 @@
 package ru.inno.labirint;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,26 +22,21 @@ import static org.testcontainers.containers.BrowserWebDriverContainer.VncRecordi
 import static org.testcontainers.containers.VncRecordingContainer.VncRecordingFormat.MP4;
 
 @ExtendWith(SeleniumJupiter.class)
+@Testcontainers
 public class LabirintTest {
 
-    public BrowserWebDriverContainer<?> container;
+    @Container
+    public BrowserWebDriverContainer<?> container = new BrowserWebDriverContainer<>(
+            "selenium/standalone-firefox:latest")
+            .withExposedPorts(7900)
+            .withRecordingMode(RECORD_ALL, Path.of("vids").toFile(), MP4);
 
     private WebDriver driver;
 
     @BeforeEach
     public void setUp() {
         // docker run -d -p 5555:4444 -p 7900:7900 --shm-size="2g" selenium/standalone-firefox:latest
-        container = new BrowserWebDriverContainer<>(
-                "selenium/standalone-firefox:latest")
-                .withExposedPorts(7900)
-                .withRecordingMode(RECORD_ALL, Path.of("vids").toFile(), MP4);
-
         driver = new RemoteWebDriver(container.getSeleniumAddress(), new FirefoxOptions());
-    }
-
-    @AfterEach
-    public void tearDown(){
-        container.stop();
     }
 
     @Test
