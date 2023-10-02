@@ -10,11 +10,9 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testcontainers.containers.BrowserWebDriverContainer;
-import org.testcontainers.containers.VncRecordingContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -22,31 +20,29 @@ import static java.time.Duration.ofSeconds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static org.testcontainers.containers.BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL;
+import static org.testcontainers.containers.VncRecordingContainer.VncRecordingFormat.MP4;
 
 @ExtendWith(SeleniumJupiter.class)
-@Testcontainers
 public class LabirintTest {
 
-    @Container
-    private BrowserWebDriverContainer<?> container =
-            new BrowserWebDriverContainer<>("selenium/standalone-firefox:latest")
-                    .withExposedPorts(7900);
-
+    public BrowserWebDriverContainer<?> container;
 
     private WebDriver driver;
 
     @BeforeEach
-    public void setUp() throws MalformedURLException {
+    public void setUp() {
         // docker run -d -p 5555:4444 -p 7900:7900 --shm-size="2g" selenium/standalone-firefox:latest
-//        driver = new RemoteWebDriver(new URL("http://localhost:5555"), new FirefoxOptions());
+        container = new BrowserWebDriverContainer<>(
+                "selenium/standalone-firefox:latest")
+                .withExposedPorts(7900)
+                .withRecordingMode(RECORD_ALL, Path.of("vids").toFile(), MP4);
+
         driver = new RemoteWebDriver(container.getSeleniumAddress(), new FirefoxOptions());
     }
 
     @AfterEach
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+    public void tearDown(){
+        container.stop();
     }
 
     @Test
