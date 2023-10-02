@@ -30,12 +30,7 @@ public class LabirintTest {
     @Container
     private BrowserWebDriverContainer<?> container =
             new BrowserWebDriverContainer<>("selenium/standalone-firefox:latest")
-                    .withExposedPorts(7900)
-                    .withRecordingMode(
-                            RECORD_ALL,
-                            Path.of("vids").toFile(),
-                            VncRecordingContainer.VncRecordingFormat.MP4
-                    );
+                    .withExposedPorts(7900);
 
 
     private WebDriver driver;
