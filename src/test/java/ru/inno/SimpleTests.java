@@ -8,7 +8,7 @@ public class SimpleTests {
 
     @Test
     public void test0() {
-        assertEquals(00, 00);
+        assertEquals(1, 0);
     }
 
     @Test
