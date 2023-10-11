@@ -1,0 +1,15 @@
+{
+  "firefox": {
+    "default": "117.0",
+    "versions": {
+      "117.0": {
+        "image": "selenoid/firefox:117.0",
+        "port": "4444",
+        "path": "/wd/hub",
+        "env": [
+          "TZ=Europe/Moscow"
+        ]
+      }
+    }
+  }
+}
