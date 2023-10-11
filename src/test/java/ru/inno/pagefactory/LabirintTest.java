@@ -16,6 +16,7 @@ import ru.inno.pagefactory.page.MainPage;
 import ru.inno.pagefactory.page.SearchResultPage;
 
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +54,7 @@ public class LabirintTest {
                 put("enableVideo", true);
             }});
             driver = new RemoteWebDriver(new URL(hub + "/wd/hub"), options);
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         });
         step("Инициализировать страницы", () -> {
             mainPage = PageFactory.initElements(driver, MainPage.class);
