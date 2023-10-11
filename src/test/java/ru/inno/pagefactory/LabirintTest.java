@@ -7,12 +7,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import ru.inno.pagefactory.block.BookCard;
 import ru.inno.pagefactory.block.Chips;
 import ru.inno.pagefactory.page.MainPage;
 import ru.inno.pagefactory.page.SearchResultPage;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static io.qameta.allure.Allure.step;
@@ -31,8 +36,31 @@ public class LabirintTest {
 
     @BeforeEach
     public void setUp() {
+        String hub = System.getProperty("hub", "http://localhost:4444");
         step("Открыть драйвер", () -> {
-            driver = new ChromeDriver();
+            FirefoxOptions options = new FirefoxOptions();
+            options.setCapability("browserVersion", "117.0");
+            options.setCapability("selenoid:options", new HashMap<String, Object>() {{
+                /* How to add test badge */
+                put("name", "Test badge...");
+
+                /* How to set session timeout */
+                put("sessionTimeout", "15m");
+
+                /* How to set timezone */
+                put("env", new ArrayList<String>() {{
+                    add("TZ=UTC");
+                }});
+
+                /* How to add "trash" button */
+                put("labels", new HashMap<String, Object>() {{
+                    put("manual", "true");
+                }});
+
+                /* How to enable video recording */
+                put("enableVideo", true);
+            }});
+            driver = new RemoteWebDriver(new URL(hub + "/wd/hub"), options);
         });
         step("Инициализировать страницы", () -> {
             mainPage = PageFactory.initElements(driver, MainPage.class);
