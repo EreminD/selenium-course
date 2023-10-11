@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -37,13 +38,15 @@ public class LabirintTest {
 
     @BeforeEach
     public void setUp() {
-        String hub = System.getProperty("hub", "http://localhost:4444");
-        System.out.println(hub);
+        String hubUrl = System.getProperty("hub", "http://localhost:4444");
+        System.out.println(hubUrl);
         step("Открыть драйвер", () -> {
+
             FirefoxOptions options = new FirefoxOptions();
             options.setCapability("browserVersion", "117.0");
             options.setCapability("selenoid:options", new HashMap<String, Object>() {{
-                put("name", "Test badge...");
+                /* How to add test badge */
+                put("name", "Test badge!!!");
                 put("sessionTimeout", "15m");
                 put("env", new ArrayList<String>() {{
                     add("TZ=UTC");
@@ -53,7 +56,7 @@ public class LabirintTest {
                 }});
                 put("enableVideo", true);
             }});
-            driver = new RemoteWebDriver(new URL(hub + "/wd/hub"), options);
+            driver = new RemoteWebDriver(new URL(hubUrl+"/wd/hub"), options);
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         });
         step("Инициализировать страницы", () -> {
@@ -78,7 +81,7 @@ public class LabirintTest {
     public void searchPOMTest() {
         generateJson();
         mainPage.open();
-        mainPage.getHeader().search("Java");
+        mainPage.getHeader().search("C#");
 
         List<BookCard> books = searchResultPage
                 .setSortingType("высокий рейтинг")
@@ -106,6 +109,39 @@ public class LabirintTest {
     @Attachment(value = "request-body.json", type = "application/json")
     private String generateJson() {
         return "{\"name\": \"tester\", \"age\":20}";
+    }
+
+    @Test
+    @Story("Как пользователь, я могу искать товары по названию")
+    @Feature("Поиск по каталогу")
+    @DisplayName("Ищем книги по названию java")
+    @Description("Проверяем, что можем найти книги по искомому слову")
+    public void searchPOMTes1t() {
+        generateJson();
+        mainPage.open();
+        mainPage.getHeader().search("Python");
+
+        List<BookCard> books = searchResultPage
+                .setSortingType("высокий рейтинг")
+                .closeChips(Chips.NOT_AVAILABLE)
+                .closeChips(Chips.AWAITING)
+                .getAllBooks();
+
+        step("Добавить все книги в корзину", () -> {
+            for (BookCard book : books) {
+                System.out.println(book.getTitle());
+                book.addToCart();
+            }
+        });
+
+        int counter = searchResultPage.getHeader()
+                .awaitCartCounterToBe(books.size())
+                .getCartCounter();
+
+        step("Ничего не делаем");
+        step("Проверяем, что в корзине счетчик товаров показывает " + books.size(), () ->
+                assertEquals(books.size(), counter, "Количество товаров в корзине не равно 60 => " + counter)
+        );
     }
 
     //    @Test
