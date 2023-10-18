@@ -10,46 +10,14 @@ import java.util.List;
 import static java.time.Duration.ofSeconds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LabirintStepdefs {
+public class SearchResultsStepdefs {
 
     private WebDriver driver;
 
     private List<WebElement> cards;
 
-    @Before
-    public void beforeTest(){
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(ofSeconds(5));
-    }
-
-    @After
-    public void afterTest(){
-        if (driver != null){
-            driver.quit();
-        }
-    }
-
-    @Дано("установлены cookie {string}")
-    public void setCookie(String keyValue){
-        String[] pair = keyValue.split("=");
-        driver.get("https://labirint.ru");
-        driver.manage().addCookie(new Cookie(pair[0], pair[1]));
-    }
-
-    @Дано("пользователь зашел на главную страницу")
-    public void openMainPage() {
-        driver.get("https://labirint.ru");
-    }
-
-    @Дано("пользователь пишет в поиск слово {string}")
-    public void search(String term) {
-        driver.findElement(By.cssSelector("#search-field")).sendKeys(term);
-    }
-
-    @Дано("нажимает кнопку Поиск")
-    public void clickSearch(){
-        driver.findElement(By.cssSelector("#search-field")).sendKeys(Keys.RETURN);
+    public SearchResultsStepdefs(DriverManager manager) {
+        driver = manager.getDriver();
     }
 
     @Дано("отображается список книг")

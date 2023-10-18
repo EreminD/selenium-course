@@ -13,4 +13,5 @@ import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 @SelectClasspathResource("ru/inno/cucumber")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "ru.inno.cucumber")
 public class RunCucumberTest {
+    // mvn clean test -Dtest=RunCucumberTest
 }
