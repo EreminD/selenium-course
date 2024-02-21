@@ -11,3 +11,7 @@ echo "agent.os.version=$(uname -r)" >> ./allure-results/environment.properties
 
 allure generate --clean
 allure open
+
+
+
+# test
